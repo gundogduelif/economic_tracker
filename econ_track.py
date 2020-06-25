@@ -1,4 +1,3 @@
-# final_project.py
 
 import csv
 import requests
