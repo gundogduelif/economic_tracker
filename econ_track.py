@@ -9,29 +9,6 @@ import plotly
 from dotenv import load_dotenv
 load_dotenv()
 
-
-#SAMPLE 3
-#from plotly.subplots import make_subplots
-#fig = make_subplots(rows=1, cols=2)
-#fig.add_scatter(y=[4, 2, 1], mode="lines", row=1, col=1)
-#fig.add_bar(y=[2, 1, 3], row=1, col=2)
-##fig.show()
-#plotly.offline.plot(fig)
-
-#SAMPLE 2 
-#import plotly.graph_objects as go
-#fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
-##fig.show()
-#plotly.offline.plot(fig) 
-
-#SAMPLE 1
-#import plotly.express as px
-#df = px.data.iris()
-#fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", title="A Plotly Express Figure")
-# print(fig)
-#fig.show() if it is not working use this one -----   plotly.offline.plot(fig) 
-
-
 api_key = os.environ.get("FRED_API_KEY")
 
 # User Input and API Pull
@@ -106,8 +83,49 @@ else:
     print("THIS STATE'S LABOR MARKET IS AT LOWER RISK OF NEEDING ECONOMIC POLICY ASSISTANCE")
 print("----------------------------------------------------------------------")
 
-# Data Visualization 
-#SELECTED STATE 
+
+#Data Visualization 1 REFERENCE: https://plotly.com/python/time-series/
+
+import plotly.graph_objects as go
+import plotly.express as px
+
+all_val = []
+a = -1
+for w in parsed_response["observations"]:
+    a = a + 1
+    valuec = float(parsed_response["observations"][a]["value"])
+    all_val.append(valuec)
+values = all_val
+all_date = []
+c = -1
+for y in parsed_response["observations"]:
+    c += 1
+    val_date = parsed_response["observations"][c]["date"]
+    all_date.append(val_date)
+dates = all_date 
+
+
+fig = px.line(x=dates, y=values, title='Unemployment Rate Time Series')
+
+fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+        buttons=list([
+            dict(count=1, label="1m", step="month", stepmode="backward"),
+            dict(count=6, label="6m", step="month", stepmode="backward"),
+            dict(count=1, label="YTD", step="year", stepmode="todate"),
+            dict(count=1, label="1y", step="year", stepmode="backward"),
+            dict(step="all")])))
+plotly.offline.plot(fig)
+
+
+
+
+# Data Visualization 2 REFERENCE: https://plotly.com/python/line-charts/
+#  visualization problem: selected state count "count":533 < national count "count":869
+
+
+#SELECTED STATE https://api.stlouisfed.org/fred/series/observations?series_id=NYUR&api_key=b735cd52d104e73ee4a39522180f228b&file_type=json
 ##{"realtime_start":"2020-06-25","realtime_end":"2020-06-25","observation_start":"1600-01-01",
 ##"observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date",
 ##"sort_order":"asc","count":533,"offset":0,"limit":100000,"observations":
@@ -123,7 +141,7 @@ print("----------------------------------------------------------------------")
 # {"realtime_start":"2020-06-25","realtime_end":"2020-06-25","date":"2020-05-01","value":"14.5"}]}
 
 
-#US NATIONAL
+#US NATIONAL  https://api.stlouisfed.org/fred/series/observations?series_id=UNRATE&api_key=b735cd52d104e73ee4a39522180f228b&file_type=json
 #{"realtime_start":"2020-06-25","realtime_end":"2020-06-25","observation_start":"1600-01-01",
 #"observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date",
 #"sort_order":"asc","count":869,"offset":0,"limit":100000,"observations":
@@ -135,54 +153,57 @@ print("----------------------------------------------------------------------")
 #{"realtime_start":"2020-06-25","realtime_end":"2020-06-25","date":"2020-05-01","value":"13.3"}]}
 
 
-import plotly.graph_objects as go
+##import plotly.graph_objects as go
+##
+##all_val = []
+##a = -1
+##for w in parsed_response["observations"]:
+##    a = a + 1
+##    valuec = float(parsed_response["observations"][a]["value"])
+##    all_val.append(valuec)
+##values = all_val
+##
+##all_val_us = []
+##b = -1
+##for x in parsed_response["observations"]:
+##    b += 1
+##    valuec_us = float(parsed_response_us["observations"][b]["value"])
+##    all_val_us.append(valuec_us)
+##values_us = all_val_us
+##
+##
+##all_date = []
+##c = -1
+##for y in parsed_response["observations"]:
+##    c += 1
+##    val_date = parsed_response["observations"][c]["date"]
+##    all_date.append(val_date)
+###dates = all_date    
+##
+##all_us_date = []
+##d = -1
+##for z in parsed_response_us["observations"]:
+##    d += 1
+##    us_date = parsed_response_us["observations"][d]["date"]
+##    all_us_date.append(us_date)
+###us_dates = all_us_date  
+##
+##fig = go.Figure()
+### Create and style traces
+##fig.add_trace(go.Scatter(x=all_date, y=values, name='selected state',line = dict(color='firebrick', width=4)))
+##fig.add_trace(go.Scatter(x=all_us_date, y=values_us, name='national',line = dict(color='royalblue', width=4, dash='dash')))
+##
+### Alternative style traces
+###fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',line=dict(color='royalblue', width=4)))
+###fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',line=dict(color='firebrick', width=4,dash='dash') # dash options include 'dash', 'dot', and 'dashdot'))
+###fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',line = dict(color='firebrick', width=4, dash='dot')))
+###fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',line=dict(color='royalblue', width=4, dash='dot')))
+##
+### Edit the layout
+##fig.update_layout(title='Unemployment Rates for Selected State & National',
+##                   xaxis_title='Date',
+##                   yaxis_title='Value')
+##plotly.offline.plot(fig)
+##
 
-all_val = []
-a = -1
-for w in parsed_response["observations"]:
-    a = a + 1
-    valuec = float(parsed_response["observations"][a]["value"])
-    all_val.append(valuec)
-values = all_val
 
-all_val_us = []
-b = -1
-for x in parsed_response["observations"]:
-    b += 1
-    valuec_us = float(parsed_response_us["observations"][b]["value"])
-    all_val_us.append(valuec_us)
-values_us = all_val_us
-
-
-all_date = []
-c = -1
-for y in parsed_response["observations"]:
-    c += 1
-    val_date = parsed_response["observations"][c]["date"]
-    all_date.append(val_date)
-#dates = all_date    
-
-all_us_date = []
-d = -1
-for z in parsed_response_us["observations"]:
-    d += 1
-    us_date = parsed_response_us["observations"][d]["date"]
-    all_us_date.append(us_date)
-#us_dates = all_us_date  
-
-fig = go.Figure()
-# Create and style traces
-fig.add_trace(go.Scatter(x=all_date, y=values, name='selected state',line = dict(color='firebrick', width=4)))
-fig.add_trace(go.Scatter(x=all_us_date, y=values_us, name='national',line = dict(color='royalblue', width=4, dash='dash')))
-
-# Alternative style traces
-#fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',line=dict(color='royalblue', width=4)))
-#fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',line=dict(color='firebrick', width=4,dash='dash') # dash options include 'dash', 'dot', and 'dashdot'))
-#fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',line = dict(color='firebrick', width=4, dash='dot')))
-#fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',line=dict(color='royalblue', width=4, dash='dot')))
-
-# Edit the layout
-fig.update_layout(title='Unemployment Rates for Selected State & National',
-                   xaxis_title='Date',
-                   yaxis_title='Value')
-plotly.offline.plot(fig)
