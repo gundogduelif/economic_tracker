@@ -60,7 +60,7 @@ all_values = []
 index = -1
 
 for v in parsed_response["observations"]:
-    index = index + 1
+    index += 1
     value = float(parsed_response["observations"][index]["value"])
     all_values.append(value)
 
@@ -135,60 +135,54 @@ print("----------------------------------------------------------------------")
 #{"realtime_start":"2020-06-25","realtime_end":"2020-06-25","date":"2020-05-01","value":"13.3"}]}
 
 
-
-
-
 import plotly.graph_objects as go
 
 all_val = []
 a = -1
-for z in parsed_response["observations"]:
+for w in parsed_response["observations"]:
     a = a + 1
     valuec = float(parsed_response["observations"][a]["value"])
     all_val.append(valuec)
 values = all_val
 
 all_val_us = []
-d = -1
+b = -1
 for x in parsed_response["observations"]:
-    d = d + 1
-    valuec_us = float(parsed_response_us["observations"][d]["value"])
+    b += 1
+    valuec_us = float(parsed_response_us["observations"][b]["value"])
     all_val_us.append(valuec_us)
 values_us = all_val_us
 
 
 all_date = []
-b = -1
+c = -1
 for y in parsed_response["observations"]:
-    b = b + 1
-    val_date = parsed_response["observations"][b]["date"]
+    c += 1
+    val_date = parsed_response["observations"][c]["date"]
     all_date.append(val_date)
-dates = all_date    
+#dates = all_date    
 
 all_us_date = []
-c = -1
-for w in parsed_response_us["observations"]:
-    c = c + 1
-    us_date = parsed_response_us["observations"][c]["date"]
+d = -1
+for z in parsed_response_us["observations"]:
+    d += 1
+    us_date = parsed_response_us["observations"][d]["date"]
     all_us_date.append(us_date)
-us_dates = all_us_date  
-
-
-
+#us_dates = all_us_date  
 
 fig = go.Figure()
 # Create and style traces
-fig.add_trace(go.Scatter(x=dates, y=values, name='selected state',line=dict(color='firebrick', width=4)))
-fig.add_trace(go.Scatter(x=us_dates, y=values_us, name='national',line=dict(color='royalblue', width=4, dash='dash')))
+fig.add_trace(go.Scatter(x=all_date, y=values, name='selected state',line = dict(color='firebrick', width=4)))
+fig.add_trace(go.Scatter(x=all_us_date, y=values_us, name='national',line = dict(color='royalblue', width=4, dash='dash')))
+
+# Alternative style traces
 #fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',line=dict(color='royalblue', width=4)))
 #fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',line=dict(color='firebrick', width=4,dash='dash') # dash options include 'dash', 'dot', and 'dashdot'))
-
-#fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',
-#                         line = dict(color='firebrick', width=4, dash='dot')))
+#fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',line = dict(color='firebrick', width=4, dash='dot')))
 #fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',line=dict(color='royalblue', width=4, dash='dot')))
 
 # Edit the layout
-fig.update_layout(title='Unemployment Rates Selected State & National',
+fig.update_layout(title='Unemployment Rates for Selected State & National',
                    xaxis_title='Date',
                    yaxis_title='Value')
 plotly.offline.plot(fig)
