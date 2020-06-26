@@ -3,9 +3,29 @@ import csv
 import requests
 import json
 import os
+import pandas as pd
+import plotly
 
 from dotenv import load_dotenv
 load_dotenv()
+
+
+
+
+#SAMPLE 2 
+#import plotly.graph_objects as go
+#fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
+##fig.show()
+#plotly.offline.plot(fig) 
+
+#SAMPLE 1
+#import plotly.express as px
+#df = px.data.iris()
+#fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", title="A Plotly Express Figure")
+# print(fig)
+#fig.show() if it is not working use this one -----   plotly.offline.plot(fig) 
+
+
 
 api_key = os.environ.get("FRED_API_KEY")
 
