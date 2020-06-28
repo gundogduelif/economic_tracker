@@ -85,7 +85,6 @@ else:
     print("THIS STATE'S LABOR MARKET IS AT LOWER RISK OF NEEDING ECONOMIC POLICY ASSISTANCE")
 print("----------------------------------------------------------------------")
 
-
 #Data Visualization 1 REFERENCE: https://plotly.com/python/time-series/
 
 import plotly.express as px
@@ -96,7 +95,7 @@ for w in parsed_response["observations"]:
     a = a + 1
     valuec = float(parsed_response["observations"][a]["value"])
     all_val.append(valuec)
-values = all_val
+values = all_val 
 all_date = []
 c = -1
 for y in parsed_response["observations"]:
@@ -105,9 +104,7 @@ for y in parsed_response["observations"]:
     all_date.append(val_date)
 dates = all_date 
 
-
-fig = px.line(x=dates, y=values, title='Unemployment Rate Time Series')
-
+fig = px.line(x=dates, y=values, title='State Unemployment Rate Time Series')
 fig.update_xaxes(
     rangeslider_visible=True,
     rangeselector=dict(
@@ -117,9 +114,8 @@ fig.update_xaxes(
             dict(count=1, label="YTD", step="year", stepmode="todate"),
             dict(count=1, label="1y", step="year", stepmode="backward"),
             dict(step="all")])))
+fig.update_layout(xaxis_title='Date',yaxis_title='Value %')
 plotly.offline.plot(fig)
-
-
 
 
 # Data Visualization 2 REFERENCE: https://plotly.com/python/line-charts/
@@ -177,7 +173,7 @@ plotly.offline.plot(fig)
 #    c += 1
 #    val_date = parsed_response["observations"][c]["date"]
 #    all_date.append(val_date)
-##dates = all_date    
+#dates = all_date    
 #
 #all_us_date = []
 #d = -1
@@ -185,12 +181,12 @@ plotly.offline.plot(fig)
 #    d += 1
 #    us_date = parsed_response_us["observations"][d]["date"]
 #    all_us_date.append(us_date)
-##us_dates = all_us_date  
+#us_dates = all_us_date  
 #
 #fig = go.Figure()
 ## Create and style traces
 #fig.add_trace(go.Scatter(x=all_date, y=values, name='selected state',line = dict(color='firebrick', width=4)))
-#fig.add_trace(go.Scatter(x=all_us_date, y=values_us, name='national',line = dict(color='royalblue', width=4, dash='dash')))
+#fig.add_trace(go.Scatter(x=all_us_date, y=values_us, range_x=['1978-01-01', '2020-05-01'], name='national',line = dict(color='royalblue', width=4, dash='dash')))
 #
 ## Edit the layout
 #fig.update_layout(title='Unemployment Rates for Selected State & National',
@@ -199,11 +195,8 @@ plotly.offline.plot(fig)
 #plotly.offline.plot(fig)
 #
 #
-## Alternative style traces
-##fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',line=dict(color='royalblue', width=4)))
-##fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',line=dict(color='firebrick', width=4,dash='dash') # dash options include 'dash', 'dot', and 'dashdot'))
-##fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',line = dict(color='firebrick', width=4, dash='dot')))
-##fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',line=dict(color='royalblue', width=4, dash='dot')))
-#
-
-
+# Alternative style traces
+#fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',line=dict(color='royalblue', width=4)))
+#fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',line=dict(color='firebrick', width=4,dash='dash') # dash options include 'dash', 'dot', and 'dashdot'))
+#fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',line = dict(color='firebrick', width=4, dash='dot')))
+#fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',line=dict(color='royalblue', width=4, dash='dot')))
