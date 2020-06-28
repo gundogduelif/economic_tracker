@@ -100,7 +100,7 @@ import plotly.express as px
 
 all_val = []
 k = -1
-for w in parsed_response["observations"]:
+for t in parsed_response["observations"]:
     k += 1
     valuec = float(parsed_response["observations"][k]["value"])
     all_val.append(valuec) 
@@ -109,7 +109,7 @@ values = all_val
 
 all_date = []
 m = -1
-for y in parsed_response["observations"]:
+for r in parsed_response["observations"]:
     m += 1
     val_date = parsed_response["observations"][m]["date"]
     all_date.append(val_date)
@@ -169,9 +169,10 @@ us_dates2 = all_us_date2
 
 fig2 = go.Figure()
 # Create and style traces
-fig2.add_trace(go.Scatter(x=all_date2, y=values2, name='state',line = dict(color='firebrick', width=4)))
-fig2.add_trace(go.Scatter(x=all_us_date2, y=values_us2, name='national',line = dict(color='royalblue', width=4, dash='dash')))
+fig2.add_trace(go.Scatter(x=all_date2, y=values2, name='state', line = dict(color='firebrick', width=4)))
+fig2.add_trace(go.Scatter(x=all_us_date2, y=values_us2, name='national', line = dict(color='royalblue', width=4, dash='dash')))
 #range_x=['1978-01-01', '2020-05-01'], 
 # Edit the layout
-fig2.update_layout(title='Unemployment Rates for Selected State & National', xaxis_title='Date', yaxis_title='Value')
+fig2.update_yaxes(ticksuffix="%")
+fig2.update_layout(title='Unemployment Rates for Selected State & National', xaxis_title='Date', yaxis_title='Value %')
 plotly.offline.plot(fig2)
