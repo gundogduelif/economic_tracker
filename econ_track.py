@@ -115,7 +115,7 @@ for r in parsed_response["observations"]:
 dates = all_date 
 
 
-fig = px.line(x=dates, y=values, title='State Unemployment Rate Time Series')
+fig = px.line(x=dates, y=values, title=str.upper(state) + " State - COVID-19 Impacts on Unemployment Statistics")
 fig.update_xaxes(
     rangeslider_visible=True,
     rangeselector=dict(
@@ -126,7 +126,7 @@ fig.update_xaxes(
             dict(count=1, label="1y", step="year", stepmode="backward"),
             dict(step="all")])))
 fig.update_yaxes(ticksuffix="%") #reference : https://plotly.com/python/axes/
-fig.update_layout(xaxis_title='Date',yaxis_title='Value, %')
+fig.update_layout(xaxis_title='Date',yaxis_title='Value %')
 
 plotly.offline.plot(fig)
 
@@ -183,5 +183,5 @@ fig2.update_xaxes(
 # Edit the layout
 
 fig2.update_yaxes(ticksuffix="%")
-fig2.update_layout(title='Unemployment Rates for Selected State & United States', xaxis_title='Date', yaxis_title='Value, %')
+fig2.update_layout(title="The National & " + str.upper(state) + " State Based - COVID-19 Impacts on Unemployment Statistics", xaxis_title='Date', yaxis_title='Value %')
 plotly.offline.plot(fig2)
