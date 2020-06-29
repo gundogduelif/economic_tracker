@@ -6,9 +6,9 @@ import os
 import pandas as pd
 import plotly
 import plotly.graph_objects as go
+import plotly.express as px
+
 from dotenv import load_dotenv
-
-
 load_dotenv()
 
 api_key = os.environ.get("FRED_API_KEY")
@@ -29,6 +29,7 @@ while True:
 
     except KeyError:
         print("Hey, didn't find that state. Please try again with a state abbreviation.")
+        
 
 # Getting the state's most recent UR
 
@@ -40,7 +41,7 @@ all_values = []
 index = -1
 
 for v in parsed_response["observations"]:
-    index += 1
+    index = index + 1
     value = float(parsed_response["observations"][index]["value"])
     all_values.append(value)
 
@@ -79,14 +80,14 @@ UR_difference = round(last_value - last_value_us, 1)
 # Information Output
 
 print("----------------------------------------------------------------------")
-print("The " + str.upper(state) + " Labor Market During COVID-19 Pandemic")
+print(f"The {str.upper(state)} Labor Market During COVID-19 Pandemic")
 print("----------------------------------------------------------------------")
-print("Current Unemployment Rate: " + str(last_value) + "%")
-print("February 2020 Unemployment Rate " + str(pre_covid_level) + "%")
-print("All-Time High Unemployment Rate: " + str(all_time_high) + "%")
-print("All-Time Low Unemployment Rate: " + str(all_time_low) + "%")
-print("Current Unemployment Rate for the United States: " + str(last_value_us) + "%")
-print("Difference between " + str.upper(state) + " and the US: " + str(UR_difference) + "ppts")
+print(f"Current Unemployment Rate: {str(last_value)}%")
+print(f"February 2020 Unemployment Rate {str(pre_covid_level)}%")
+print(f"All-Time High Unemployment Rate ({all_time_high_date}): {str(all_time_high)}%")
+print(f"All-Time Low Unemployment Rate ({all_time_low_date}): {str(all_time_low)}%")
+print(f"Current Unemployment Rate for the United States: {str(last_value_us)}%")
+print(f"Difference between {str.upper(state)} and the US: {str(UR_difference)}ppts")
 print("----------------------------------------------------------------------")
 if last_value > last_value_us:
     print("THIS STATE'S LABOR MARKET IS AT HIGHER RISK OF NEEDING ECONOMIC POLICY ASSISTANCE")
@@ -94,9 +95,7 @@ else:
     print("THIS STATE'S LABOR MARKET IS AT LOWER RISK OF NEEDING ECONOMIC POLICY ASSISTANCE")
 print("----------------------------------------------------------------------")
 
-#Data Visualization 1 REFERENCE: https://plotly.com/python/time-series/
-
-import plotly.express as px
+# Data Visualization 1 REFERENCE: https://plotly.com/python/time-series/
 
 all_val = []
 k = -1
@@ -127,10 +126,9 @@ fig.update_xaxes(
             dict(count=1, label="1y", step="year", stepmode="backward"),
             dict(step="all")])))
 fig.update_yaxes(ticksuffix="%") #reference : https://plotly.com/python/axes/
-fig.update_layout(xaxis_title='Date',yaxis_title='Value %')
+fig.update_layout(xaxis_title='Date',yaxis_title='Value, %')
 
 plotly.offline.plot(fig)
-
 
 # Data Visualization 2 REFERENCE: https://plotly.com/python/line-charts/
 
@@ -144,7 +142,7 @@ values2 = all_val2
 
 all_val_us2 = []
 b = -1
-for x in parsed_response["observations"]:
+for x in parsed_response_us["observations"]:
     b += 1
     valuec_us2 = float(parsed_response_us["observations"][b]["value"])
     all_val_us2.append(valuec_us2)
@@ -168,11 +166,14 @@ for z in parsed_response_us["observations"]:
 us_dates2 = all_us_date2  
 
 fig2 = go.Figure()
+
 # Create and style traces
+
 fig2.add_trace(go.Scatter(x=all_date2, y=values2, name='state', line = dict(color='firebrick', width=4)))
 fig2.add_trace(go.Scatter(x=all_us_date2, y=values_us2, name='national', line = dict(color='royalblue', width=4, dash='dash')))
-#range_x=['1978-01-01', '2020-05-01'], 
+
 # Edit the layout
+
 fig2.update_yaxes(ticksuffix="%")
-fig2.update_layout(title='Unemployment Rates for Selected State & National', xaxis_title='Date', yaxis_title='Value %')
+fig2.update_layout(title='Unemployment Rates for Selected State & United States', xaxis_title='Date', yaxis_title='Value, %')
 plotly.offline.plot(fig2)
